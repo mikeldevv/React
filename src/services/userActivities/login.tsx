@@ -24,14 +24,5 @@ interface UserLoginData {
   
     const result = await response.json();
 
-    // set auth token in browser cookies
-    await fetch('/api/set-cookie', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ accessCode: result.accessCode }),
-    });
-
-    return result;
+    return result.accessCode;
   }

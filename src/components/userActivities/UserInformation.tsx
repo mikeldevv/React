@@ -38,7 +38,8 @@ const UserInformation = () => {
     <div>
       <h1>User Information</h1>
       {/* Check if these properties exist in your userInfo object */}
-      <p>Name: {userInfo.firstName} {userInfo.lastName}</p>
+      <p>FirstName: {userInfo.firstName}</p>
+      <p>LastName: {userInfo.lastName}</p>
       <p>Email: {userInfo.emailAddress}</p>
       {/* You can add more user information fields here as needed */}
     </div>

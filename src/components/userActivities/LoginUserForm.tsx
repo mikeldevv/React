@@ -1,5 +1,4 @@
 'use client'
-// Import necessary hooks and functions
 import React, { FormEvent, useState } from 'react';
 import { loginUser } from "../../services/userActivities/login"
 
@@ -22,10 +21,13 @@ const LoginUserForm = () => {
     event.preventDefault();
 
     try {
-      const result = await loginUser(formData);
-      console.log(result); // Handle success (e.g., showing a success message, redirecting, etc.)
+      const accessCode = await loginUser(formData);
+      if (typeof window !== "undefined") {
+        localStorage.setItem('AuthToken', accessCode);
+        console.log('Login successful, token stored.');
+      }// Handle success (e.g., showing a success message, redirecting, etc.)
     } catch (error) {
-      console.error('Registration failed:', error);
+      console.error('Login failed:', error);
     }
   };
 

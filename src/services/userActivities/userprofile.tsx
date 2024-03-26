@@ -1,8 +1,6 @@
-import { cookies } from 'next/headers'
-
 
 export async function fetchUser() {
-  const token = cookies().get('authToken');
+  const token = typeof window !== "undefined" ? localStorage.getItem('AuthToken') : null;
   
   if (!token) {
     throw new Error('No authentication token found');
