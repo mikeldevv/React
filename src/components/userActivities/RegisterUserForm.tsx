@@ -1,7 +1,7 @@
 'use client'
 // Import necessary hooks and functions
 import React, { FormEvent, useState } from 'react';
-import { registerUser } from "../../services/actions/register"
+import { registerUser } from "../../services/userActivities/register"
 
 const RegisterUserForm = () => {
   const [formData, setFormData] = useState({
