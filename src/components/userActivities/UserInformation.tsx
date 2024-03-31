@@ -35,13 +35,14 @@ const UserInformation = () => {
   if (!userInfo) return <div>No user information available.</div>;
 
   return (
-    <div>
-      <h1>User Information</h1>
-      {/* Check if these properties exist in your userInfo object */}
-      <p>FirstName: {userInfo.firstName}</p>
-      <p>LastName: {userInfo.lastName}</p>
-      <p>Email: {userInfo.emailAddress}</p>
-      {/* You can add more user information fields here as needed */}
+    <div className="bg-white shadow-lg rounded-lg p-6 max-w-lg mx-auto">
+      <h2 className="text-2xl font-semibold mb-4">User Information</h2>
+      <div className="space-y-3">
+        <p><span className="font-semibold">First Name:</span> {userInfo.firstName}</p>
+        <p><span className="font-semibold">Last Name:</span> {userInfo.lastName}</p>
+        <p><span className="font-semibold">Email:</span> {userInfo.emailAddress}</p>
+        {/* Add more fields as needed */}
+      </div>
     </div>
   );
 };

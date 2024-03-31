@@ -32,13 +32,14 @@ const LoginUserForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-10 space-y-4">
       <input
         type="email"
         name="emailAddress"
         value={formData.emailAddress}
         onChange={handleChange}
         placeholder="Email"
+        className="input"
       />
       <input
         type="password"
@@ -46,8 +47,9 @@ const LoginUserForm = () => {
         value={formData.password}
         onChange={handleChange}
         placeholder="Password"
+        className="input"
       />
-      <button type="submit">Login</button>
+      <button type="submit"  className="btn">Login</button>
     </form>
   );
 };
