@@ -4,8 +4,7 @@ interface UserLoginData {
     password: string;
   }
 
-export async function loginUser(userData: UserLoginData) {
-   
+  export async function loginUser(userData: UserLoginData) {
     const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
     if (!baseUrl) {
       throw new Error('API base URL is not defined in the environment variables.');
@@ -16,8 +15,14 @@ export async function loginUser(userData: UserLoginData) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify( userData ),
+      body: JSON.stringify(userData),
     });
+  
+    if (!response.ok) {
+      throw new Error('Login failed');
+    }
+  
     const result = await response.json();
-    return result;
+
+    return result.accessCode;
   }

@@ -1,7 +1,7 @@
 'use client'
 // Import necessary hooks and functions
 import React, { FormEvent, useState } from 'react';
-import { registerUser } from "../../services/actions/register"
+import { registerUser } from "../../services/userActivities/register"
 
 const RegisterUserForm = () => {
   const [formData, setFormData] = useState({
@@ -33,13 +33,14 @@ const RegisterUserForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-10 space-y-4">
       <input
         type="text"
         name="firstName"
         value={formData.firstName}
         onChange={handleChange}
         placeholder="First Name"
+        className="input"
       />
       <input
         type="text"
@@ -47,6 +48,7 @@ const RegisterUserForm = () => {
         value={formData.lastName}
         onChange={handleChange}
         placeholder="Last Name"
+        className="input"
       />
       <input
         type="email"
@@ -54,6 +56,7 @@ const RegisterUserForm = () => {
         value={formData.emailAddress}
         onChange={handleChange}
         placeholder="Email"
+        className="input"
       />
       <input
         type="password"
@@ -61,6 +64,7 @@ const RegisterUserForm = () => {
         value={formData.password}
         onChange={handleChange}
         placeholder="Password"
+        className="input"
       />
        <input
         type="text"
@@ -68,8 +72,9 @@ const RegisterUserForm = () => {
         value={formData.otp}
         onChange={handleChange}
         placeholder="Otp"
+        className="input"
       />
-      <button type="submit">Register</button>
+      <button type="submit" className="btn">Register</button>
     </form>
   );
 };

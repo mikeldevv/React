@@ -1,7 +1,6 @@
 'use client'
-// Import necessary hooks and functions
 import React, { FormEvent, useState } from 'react';
-import { loginUser } from "../../services/actions/login"
+import { loginUser } from "../../services/userActivities/login"
 
 const LoginUserForm = () => {
   const [formData, setFormData] = useState({
@@ -22,21 +21,25 @@ const LoginUserForm = () => {
     event.preventDefault();
 
     try {
-      const result = await loginUser(formData);
-      console.log(result); // Handle success (e.g., showing a success message, redirecting, etc.)
+      const accessCode = await loginUser(formData);
+      if (typeof window !== "undefined") {
+        localStorage.setItem('AuthToken', accessCode);
+        console.log('Login successful, token stored.');
+      }// Handle success (e.g., showing a success message, redirecting, etc.)
     } catch (error) {
-      console.error('Registration failed:', error);
+      console.error('Login failed:', error);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-10 space-y-4">
       <input
         type="email"
         name="emailAddress"
         value={formData.emailAddress}
         onChange={handleChange}
         placeholder="Email"
+        className="input"
       />
       <input
         type="password"
@@ -44,8 +47,9 @@ const LoginUserForm = () => {
         value={formData.password}
         onChange={handleChange}
         placeholder="Password"
+        className="input"
       />
-      <button type="submit">Login</button>
+      <button type="submit"  className="btn">Login</button>
     </form>
   );
 };
