@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react';
-import { fetchUser } from "../../services/userActivities/userprofile";
+import { fetchUser } from "../../lib/user-api";
 
 interface UserInfo {
     firstName: string;

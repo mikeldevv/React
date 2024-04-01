@@ -1,6 +1,6 @@
 'use client'
 import React, { FormEvent, useState } from 'react';
-import { loginUser } from "../../services/userActivities/login"
+import { loginUser } from "../../lib/user-api"
 
 const LoginUserForm = () => {
   const [formData, setFormData] = useState({
