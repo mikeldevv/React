@@ -1,54 +1,43 @@
 'use client'
-import React, { FormEvent, useState } from 'react';
 import { loginUser } from "../../lib/user-api"
+import { loginUserSchema } from '../../lib/utils';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const LoginUserForm = () => {
-  const [formData, setFormData] = useState({
-    emailAddress: '',
-    password: '',
+  const { register, handleSubmit, formState: { errors } } = useForm<UserLoginData>({
+    resolver: yupResolver(loginUserSchema)
   });
 
-  // Handle form submission
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (event: FormEvent) => {
-    event.preventDefault();
-
+  const onSubmit = async (data: UserLoginData) => {
     try {
-      const accessCode = await loginUser(formData);
-      if (typeof window !== "undefined") {
+      const accessCode = await loginUser(data);
+       if (typeof window !== "undefined") {
         localStorage.setItem('AuthToken', accessCode);
-        console.log('Login successful, token stored.');
-      }// Handle success (e.g., showing a success message, redirecting, etc.)
-    } catch (error) {
-      console.error('Login failed:', error);
+    }
+   } catch (error) {
+      console.error('Login failed:', error); // Handle error
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-10 space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto mt-10 space-y-4">
       <input
+        {...register('emailAddress')}
         type="email"
-        name="emailAddress"
-        value={formData.emailAddress}
-        onChange={handleChange}
         placeholder="Email"
         className="input"
       />
+      <p style={{ color: 'red' }}>{errors.emailAddress?.message}</p>
+      
       <input
+        {...register('password')}
         type="password"
-        name="password"
-        value={formData.password}
-        onChange={handleChange}
         placeholder="Password"
         className="input"
       />
+      <p style={{ color: 'red' }}>{errors.password?.message}</p>
+
       <button type="submit"  className="btn">Login</button>
     </form>
   );

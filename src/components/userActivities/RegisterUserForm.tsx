@@ -1,79 +1,62 @@
 'use client'
-// Import necessary hooks and functions
-import React, { FormEvent, useState } from 'react';
+
 import { registerUser } from "../../lib/user-api"
+import { registerUserSchema } from '../../lib/utils';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const RegisterUserForm = () => {
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    emailAddress: '',
-    password: '',
-    otp: ''
+  const { register, handleSubmit, formState: { errors } } = useForm<UserRegistrationData>({
+    resolver: yupResolver(registerUserSchema)
   });
 
-  // Handle form submission
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (event: FormEvent) => {
-    event.preventDefault();
-
+  const onSubmit = async (data: UserRegistrationData) => {
     try {
-      const result = await registerUser(formData);
-      console.log(result); // Handle success (e.g., showing a success message, redirecting, etc.)
+       await registerUser(data);
     } catch (error) {
-      console.error('Registration failed:', error);
+      console.error('Registration failed:', error); // Handle error
     }
   };
 
+
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-10 space-y-4">
-      <input
-        type="text"
-        name="firstName"
-        value={formData.firstName}
-        onChange={handleChange}
+    <form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto mt-10 space-y-4">
+       <input
+        {...register('firstName')}
         placeholder="First Name"
         className="input"
       />
+      <p style={{ color: 'red' }}>{errors.firstName?.message}</p>
       <input
-        type="text"
-        name="lastName"
-        value={formData.lastName}
-        onChange={handleChange}
+        {...register('lastName')}
         placeholder="Last Name"
         className="input"
       />
+      <p style={{ color: 'red' }}>{errors.lastName?.message}</p>
+
       <input
+        {...register('emailAddress')}
         type="email"
-        name="emailAddress"
-        value={formData.emailAddress}
-        onChange={handleChange}
         placeholder="Email"
         className="input"
       />
+      <p style={{ color: 'red' }}>{errors.emailAddress?.message}</p>
+
       <input
+        {...register('password')}
         type="password"
-        name="password"
-        value={formData.password}
-        onChange={handleChange}
         placeholder="Password"
         className="input"
       />
-       <input
-        type="text"
-        name="otp"
-        value={formData.otp}
-        onChange={handleChange}
+      <p style={{ color: 'red' }}>{errors.password?.message}</p>
+
+      <input
+        {...register('otp')}
         placeholder="Otp"
         className="input"
       />
+      <p style={{ color: 'red' }}>{errors.otp?.message}</p>
+
       <button type="submit" className="btn">Register</button>
     </form>
   );
