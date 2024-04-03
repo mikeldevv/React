@@ -3,8 +3,12 @@ import { loginUser } from "../../lib/user-api"
 import { loginUserSchema } from '../../lib/utils';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import React, { useState } from 'react';
+
 
 const LoginUserForm = () => {
+  const [error, setError] = useState(null);
+
   const { register, handleSubmit, formState: { errors } } = useForm<UserLoginData>({
     resolver: yupResolver(loginUserSchema)
   });
@@ -15,13 +19,14 @@ const LoginUserForm = () => {
        if (typeof window !== "undefined") {
         localStorage.setItem('AuthToken', accessCode);
     }
-   } catch (error) {
-      console.error('Login failed:', error); // Handle error
+   } catch (error: any) {
+    setError(error.message || 'Something went wrong!');
     }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto mt-10 space-y-4">
+      {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
       <input
         {...register('emailAddress')}
         type="email"
@@ -29,7 +34,7 @@ const LoginUserForm = () => {
         className="input"
       />
       <p style={{ color: 'red' }}>{errors.emailAddress?.message}</p>
-      
+
       <input
         {...register('password')}
         type="password"

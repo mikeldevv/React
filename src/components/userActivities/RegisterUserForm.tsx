@@ -4,8 +4,12 @@ import { registerUser } from "../../lib/user-api"
 import { registerUserSchema } from '../../lib/utils';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import React, { useState } from 'react';
+
 
 const RegisterUserForm = () => {
+  const [error, setError] = useState(null);
+
   const { register, handleSubmit, formState: { errors } } = useForm<UserRegistrationData>({
     resolver: yupResolver(registerUserSchema)
   });
@@ -13,14 +17,16 @@ const RegisterUserForm = () => {
   const onSubmit = async (data: UserRegistrationData) => {
     try {
        await registerUser(data);
-    } catch (error) {
-      console.error('Registration failed:', error); // Handle error
+    } catch (error : any) {
+      setError(error.message || 'Something went wrong!');
     }
   };
 
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto mt-10 space-y-4">
+      {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
+
        <input
         {...register('firstName')}
         placeholder="First Name"

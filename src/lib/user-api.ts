@@ -13,8 +13,24 @@ export async function loginUser(userData: UserLoginData) {
       body: JSON.stringify(userData),
     });
     if (!response.ok) {
-      throw new Error('Login failed');
-    }
+      // Default error message
+      let errorMessage = 'Login failed';
+
+      try {
+          const contentType = response.headers.get('Content-Type');
+          if (contentType && contentType.includes('application/json')) {
+              const errorResponse = await response.json();
+              errorMessage = errorResponse.message || errorMessage;
+          } else {
+              // For non-JSON responses, such as the plain text response from your API
+              errorMessage = await response.text();
+          }
+      } catch (error) {
+          // If there's an error parsing the error response, we stick with the default message
+      }
+
+      throw new Error(errorMessage);
+  }
     const result = await response.json();
 
     return result.accessCode;
@@ -32,6 +48,25 @@ export async function loginUser(userData: UserLoginData) {
       },
       body: JSON.stringify( userData ),
     });
+    if (!response.ok) {
+      // Default error message
+      let errorMessage = 'Registration failed';
+
+      try {
+          const contentType = response.headers.get('Content-Type');
+          if (contentType && contentType.includes('application/json')) {
+              const errorResponse = await response.json();
+              errorMessage = errorResponse.message || errorMessage;
+          } else {
+              // For non-JSON responses, such as the plain text response from your API
+              errorMessage = await response.text();
+          }
+      } catch (error) {
+          // If there's an error parsing the error response, we stick with the default message
+      }
+
+      throw new Error(errorMessage);
+  }
     const result = await response.json();
     return result;
   }
